@@ -20,14 +20,13 @@
             android:layout_width="319dp"
             android:layout_height="81dp"
             android:inputType="textPersonName"
-            android:text="同じ言葉を入力してください。"
             android:ems="10"
             android:id="@+id/editText"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginRight="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="84dp"
-            app:layout_constraintBottom_toTopOf="@+id/button" android:textSize="20sp"/>
+            app:layout_constraintBottom_toTopOf="@+id/button" android:textSize="20sp" android:hint="@string/hint"/>
     <Button
             android:text="STOP"
             android:layout_width="173dp"

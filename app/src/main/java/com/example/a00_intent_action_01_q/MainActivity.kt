@@ -20,13 +20,61 @@
 
 package com.example.a00_intent_action_01_q
 
+import android.content.Intent
+import android.media.AudioManager
+import android.media.MediaPlayer
+import android.media.SoundPool
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var player: MediaPlayer
+    private lateinit var soundPool: SoundPool
+    private var soundTrue = 0
+    private var soundFalse = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val handler = Handler()
+        handler.postDelayed(Runnable{
+            timerText.text = setText()
+            player = MediaPlayer.create(this,R.raw.bgm_beatalarm)
+            player.isLooping = true
+            player.start()
+        }, 5000)
+
+        button.setOnClickListener {
+            if(editText.text.toString() == timerText.text.toString()){
+                player.pause()
+                soundPool.play(soundTrue,1.0f,1.0f, 0,0, 1.0f)
+                val intent = Intent(this, ResultActivity::class.java)
+                intent.putExtra("ALARM",timerText.text.toString())
+                startActivity(intent)
+            } else {
+                soundPool.play(soundFalse,1.0f,1.0f, 0,0, 1.0f)
+            }
+        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        soundPool = SoundPool(2, AudioManager.STREAM_ALARM, 0)
+        soundTrue = soundPool.load(this, R.raw.se_alarm_stop, 1)
+        soundFalse = soundPool.load(this, R.raw.se_false, 1)
+    }
+}
+
+fun setText(): String{
+    val text = when((Math.random() * 3).toInt()){
+        0 -> "今が起きる時"
+        1 -> "目覚めよ"
+        2 -> "おはよう"
+        else -> "目覚めよ"
+    }
+    return text
 }
