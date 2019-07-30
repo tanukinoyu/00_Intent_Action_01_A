@@ -21,6 +21,7 @@
 package com.example.a00_intent_action_01_q
 
 import android.content.Intent
+import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.SoundPool
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     private var soundTrue = 0
     private var soundFalse = 0
 
+    //MediaPlayerとSoundPoolのインスタンスを遅延初期化するためにlateinitを用いて変数を定義する。
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,8 +51,13 @@ class MainActivity : AppCompatActivity() {
             player.start()
         }, 5000)
 
+        //5秒後に処理を行うためにHandlerの遅延処理を使用する。
+
         button.setOnClickListener {
             if(editText.text.toString() == timerText.text.toString()){
+
+                //editTextで入力された文字列はCharSequense型なのでString型にする。
+
                 player.pause()
                 soundPool.play(soundTrue,0.5f,0.5f, 0,0, 1.0f)
                 val intent = Intent(this, ResultActivity::class.java)
@@ -59,14 +67,25 @@ class MainActivity : AppCompatActivity() {
                 soundPool.play(soundFalse,0.5f,0.5f, 0,0, 1.0f)
             }
         }
+
+        //STOPボタンのonClickメソッドで入力テキストの判定を行い、正誤に基づいて音を鳴らす。
+        //正解の場合はインテントで入力テキストを格納し、遷移先のアクティビティで受け取る準備をする。
     }
 
     override fun onResume() {
         super.onResume()
-        soundPool = SoundPool(2, AudioManager.STREAM_ALARM, 0)
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_ALARM)
+            .build()
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(2)
+            .setAudioAttributes(audioAttributes)
+            .build()
         soundTrue = soundPool.load(this, R.raw.se_alarm_stop, 1)
         soundFalse = soundPool.load(this, R.raw.se_false, 1)
     }
+
+    //AudioAttributesとSoundPoolの設定を行い、予めサウンドリソースを読み込んで変数にIDを割り当てる。
 }
 
 fun setText(): String{
@@ -77,3 +96,5 @@ fun setText(): String{
     }
     return text
 }
+
+//ランダムに文字列を表示させるための関数。
