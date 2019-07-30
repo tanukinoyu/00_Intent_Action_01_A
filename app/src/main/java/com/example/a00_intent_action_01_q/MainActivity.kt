@@ -51,12 +51,12 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             if(editText.text.toString() == timerText.text.toString()){
                 player.pause()
-                soundPool.play(soundTrue,1.0f,1.0f, 0,0, 1.0f)
+                soundPool.play(soundTrue,0.5f,0.5f, 0,0, 1.0f)
                 val intent = Intent(this, ResultActivity::class.java)
                 intent.putExtra("ALARM",timerText.text.toString())
                 startActivity(intent)
             } else {
-                soundPool.play(soundFalse,1.0f,1.0f, 0,0, 1.0f)
+                soundPool.play(soundFalse,0.5f,0.5f, 0,0, 1.0f)
             }
         }
     }
@@ -73,8 +73,7 @@ fun setText(): String{
     val text = when((Math.random() * 3).toInt()){
         0 -> "今が起きる時"
         1 -> "目覚めよ"
-        2 -> "おはよう"
-        else -> "目覚めよ"
+        else -> "おはよう"
     }
     return text
 }

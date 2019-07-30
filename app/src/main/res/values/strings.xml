@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">00_Intent_Action_01_Q</string>
     <string name="hint">同じ言葉を入力してください。</string>
+    <string name="textView">...Now loading</string>
 </resources>
